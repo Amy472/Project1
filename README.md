@@ -108,6 +108,28 @@ sensitivity_log
 specificity_log = tn_log/(tn_log + fp_log)
 specificity_log
 
+cm_log7 = logit_model.pred_table(0.7)
+cm_log7
+tn_log7 = cm_log7[0][0]
+fp_log7 = cm_log7[0][1]
+fn_log7 = cm_log7[1][0]
+tp_log7 = cm_log7[1][1]
+sensitivity_log7 = tp_log7/(tp_log7 + fn_log7)
+sensitivity_log7
+specificity_log7 = tn_log7/(tn_log7 + fp_log7)
+specificity_log7
+
+cm_log3 = logit_model.pred_table(0.3)
+cm_log3
+tn_log3 = cm_log3[0][0]
+fp_log3 = cm_log3[0][1]
+fn_log3 = cm_log3[1][0]
+tp_log3 = cm_log3[1][1]
+sensitivity_log3 = tp_log3/(tp_log3 + fn_log3)
+sensitivity_log3
+specificity_log3 = tn_log3/(tn_log3 + fp_log3)
+specificity_log3
+
 # DecisionTreeClassification
 from sklearn.tree import DecisionTreeClassifier
 tree = DecisionTreeClassifier(max_depth = 2)
@@ -152,13 +174,6 @@ sensitivity_d4 = tp_d4/(tp_d4 + fn_d4)
 sensitivity_d4
 specificity_d4 = tn_d4/(tn_d4 + fp_d4)
 specificity_d4
-
-
-
-
-
-
-
 
 
 
