@@ -176,6 +176,99 @@ specificity_d4 = tn_d4/(tn_d4 + fp_d4)
 specificity_d4
 
 
+g = sns.relplot(x="PhysHlth", y="MentHlth", hue="HeartDiseaseorAttack",data=HeartDisease)
+g.set_axis_labels("Poor Physical Health Days", "Poor Mental Health Days")
+g.fig.suptitle("Relationship Between Physical and Mental Health")
+
+j = sns.jointplot(x="BMI", y="PhysHlth", data=HeartDisease, kind="scatter")
+j.set_axis_labels("Body Mass Index", "Poor Physical Health Days")
+j.fig.suptitle("Relationship Between BMI and Physical Health")
+
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+X = HeartDisease[["BMI", "Age", "MentHlth"]]
+y = HeartDisease["PhysHlth"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=40)
+lr = LinearRegression()
+lr.fit(X_train, y_train)
+y_pred = lr.predict(X_test)
+import statsmodels.formula.api as smf
+model = smf.ols('PhysHlth ~ BMI + Age + MentHlth', data=HeartDisease).fit()
+model.summary()
+from sklearn.metrics import mean_squared_error
+mse = mean_squared_error(y_test, y_pred)
+mse
+
+model1 = smf.ols('PhysHlth ~ BMI + MentHlth', data=HeartDisease).fit()
+model1.summary()
+X1 = HeartDisease[["BMI", "MentHlth"]]
+X1_train, X1_test, y1_train, y1_test = train_test_split(X1, y, test_size=0.2, random_state=40)
+lr.fit(X1_train, y1_train)
+y1_pred = lr.predict(X1_test)
+mse1 = mean_squared_error(y1_test, y1_pred)
+mse1
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+features = ["BMI", "Age", "MentHlth", "PhysHlth"]
+X = HeartDisease[features]
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+pca = PCA(n_components=2)
+pca_c = pca.fit_transform(X_scaled)
+pca_c
+pca_df = pd.DataFrame(pca_c, columns=["PC1", "PC2"])
+pca_df["HeartDisease"] = HeartDisease["HeartDiseaseorAttack"]
+sns.relplot(x="PC1", y="PC2", hue="HeartDisease", data=pca_df)
+plt.title("PCA of Health Indicators")
+plt.xlabel("Principal Component 1")
+plt.ylabel("Principal Component 2")
+
+features1 = ["BMI", "PhysHlth", "MentHlth"]
+X1 = HeartDisease[features1]
+X1_scaled = scaler.fit_transform(X1)
+components1 = pca.fit_transform(X1_scaled)
+components1
+pca_df1 = pd.DataFrame(components1, columns=["PC1", "PC2"])
+pca_df1["HeartDisease"] = HeartDisease["HeartDiseaseorAttack"]
+sns.scatterplot(x="PC1", y="PC2", hue="HeartDisease",data=pca_df1, alpha=0.6)
+plt.title("PCA of Selected Health Indicators")
+plt.xlabel("Principal Component 1")
+plt.ylabel("Principal Component 2")
+
+sns.boxplot(x="HeartDiseaseorAttack", y="BMI", data=HeartDisease)
+plt.title("BMI by Heart Disease Status")
+plt.xlabel("Heart Disease or Attack")
+plt.ylabel("BMI")
+
+HD = HeartDisease[HeartDisease["HeartDiseaseorAttack"] == 1]["BMI"]
+no_HD = HeartDisease[HeartDisease["HeartDiseaseorAttack"] == 0]["BMI"]
+observed_stat = HD.mean() - no_HD.mean()
+observed_stat
+
+import numpy as np
+all_bmi = HeartDisease["BMI"].values
+labels = HeartDisease["HeartDiseaseorAttack"].values
+
+inertias_list = []
+for i in range(1000):
+    shuffled = np.random.permutation(labels)
+    group1 = all_bmi[shuffled == 1]
+    group0 = all_bmi[shuffled == 0]
+    stat = group1.mean() - group0.mean()
+    inertias_list.append(stat)
+p_value = np.mean(np.abs(simulated_stats) >= abs(observed_stat))
+p_value
+
+
+
+
+
+
+
+
+
+
 
 
 
