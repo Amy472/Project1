@@ -175,7 +175,7 @@ sensitivity_d4
 specificity_d4 = tn_d4/(tn_d4 + fp_d4)
 specificity_d4
 
-
+# Graph
 g = sns.relplot(x="PhysHlth", y="MentHlth", hue="HeartDiseaseorAttack",data=HeartDisease)
 g.set_axis_labels("Poor Physical Health Days", "Poor Mental Health Days")
 g.fig.suptitle("Relationship Between Physical and Mental Health")
@@ -184,6 +184,7 @@ j = sns.jointplot(x="BMI", y="PhysHlth", data=HeartDisease, kind="scatter")
 j.set_axis_labels("Body Mass Index", "Poor Physical Health Days")
 j.fig.suptitle("Relationship Between BMI and Physical Health")
 
+# linear Regression
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 X = HeartDisease[["BMI", "Age", "MentHlth"]]
@@ -208,6 +209,7 @@ y1_pred = lr.predict(X1_test)
 mse1 = mean_squared_error(y1_test, y1_pred)
 mse1
 
+# PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 features = ["BMI", "Age", "MentHlth", "PhysHlth"]
@@ -236,6 +238,7 @@ plt.title("PCA of Selected Health Indicators")
 plt.xlabel("Principal Component 1")
 plt.ylabel("Principal Component 2")
 
+# Hypothesis test
 sns.boxplot(x="HeartDiseaseorAttack", y="BMI", data=HeartDisease)
 plt.title("BMI by Heart Disease Status")
 plt.xlabel("Heart Disease or Attack")
