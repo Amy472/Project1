@@ -257,7 +257,7 @@ for i in range(1000):
     group0 = all_bmi[shuffled == 0]
     stat = group1.mean() - group0.mean()
     inertias_list.append(stat)
-p_value = np.mean(np.abs(simulated_stats) >= abs(observed_stat))
+p_value = np.mean(np.abs(inertias_list) >= abs(observed_stat))
 p_value
 
 
